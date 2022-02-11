@@ -1,0 +1,7 @@
+##to start jupyter notebook(open the browser on the local computer)
+server: jupyter notebook --no-browser --port=12345
+local: ssh -N -L 8080:localhost:12345 beirui@159.226.116.66
+
+##the usage of "rename"
+rename -f 's/previous_characters/new_characters/' abc(to_speificify_filenames)*
+

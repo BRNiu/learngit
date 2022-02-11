@@ -1,0 +1,104 @@
+#!/bin/bash
+#********************************************************************
+#Author: Beirui Niu
+#Group: Lu Lab
+#Date： 2021-10-29
+#FileName： retriever.sh
+#URL： 
+#Description：这是聪明的钮蓓蕊写的第二个shell文件，主要是参照blast.sh做了一些修改，用来批量进行ltr_retriever，预计用时会很长。第一个误删了，不过差不多，反正以后还会写。
+#********************************************************************
+PATH=/data1/home/beirui/anaconda3/bin:/data1/home/beirui/anaconda3/condabin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/data1/home/beirui/.local/bin:/data1/home/beirui/bin
+export PATH
+
+#Storage
+contigs_dir=/data1/home/beirui/data/unzip.contigs
+workspace=/data1/home/beirui/workspace/02_retriever
+software=/data1/home/beirui/software
+contigs_file=(`ls $contigs_dir`)
+
+for(( i=0;i<${#contigs_file[@]};i++))
+do
+contigs_name[i]=`echo ${contigs_file[i]} | cut -d . -f1`
+done
+
+echo ${contigs_file[@]}
+echo ${contigs_name[@]}
+
+#Function
+function har_gt {
+ln -s $contigs_dir/${contigs_file[i]}
+$software/05_LTRharvest/bin/gt suffixerator -db ${contigs_file[i]} -indexname ${contigs_name[i]} -tis -suf -lcp -des -ssp -sds -dna
+}
+function har {
+$software/05_LTRharvest/bin/gt ltrharvest -index ${contigs_name[i]} -minlenltr 100 -maxlenltr 7000 -mintsd 4 -maxtsd 6 -motif TGCA -motifmis 1 -similar 85 -vic 10 -seed 20 -seqids yes > ${contigs_name[i]}.harvest.scn
+}
+function fin {
+$software/04_LTR_FINDER_parallel/LTR_FINDER_parallel -seq ${contigs_file[i]} -threads 10 -harvest_out -size 1000000 -time 300
+cat ${contigs_name[i]}.harvest.scn ${contigs_name[i]}.finder.combine.scn > ${contigs_name[i]}.rawLTR.scn
+}
+function ret {
+$software/03_LTR_retriever/LTR_retriever -genome ${contigs_file[i]} -inharvest ${contigs_name[i]}.rawLTR.scn -threads 10 [options]
+}
+function lai {
+$software/03_LTR_retriever/LAI -genome ${contigs_file[i]} -intact ${contigs_name[i]}.pass.list -all ${contigs_name[i]}.out [options]
+}
+
+#Calculate
+echo "RETRIEVER:"
+cd $workspace
+for ((i=0; i<${#contigs_file[@]}; i++))
+	do 
+		joblist=($(jobs -p))
+		while (( ${#joblist[*]} >= 20 ))
+		do
+			sleep 1
+			joblist=($(jobs -p))
+		done
+		har_gt&
+	done
+wait
+for ((i=0; i<${#contigs_file[@]}; i++))
+	do 
+		joblist=($(jobs -p))
+		while (( ${#joblist[*]} >= 20 ))
+		do
+			sleep 1
+			joblist=($(jobs -p))
+		done
+		har&
+	done
+wait
+for ((i=0; i<${#contigs_file[@]}; i++))
+	do 
+		joblist=($(jobs -p))
+		while (( ${#joblist[*]} >= 20 ))
+		do
+			sleep 1
+			joblist=($(jobs -p))
+		done
+		fin&
+	done
+wait
+for ((i=0; i<${#contigs_file[@]}; i++))
+	do 
+		joblist=($(jobs -p))
+		while (( ${#joblist[*]} >= 20 ))
+		do
+			sleep 1
+			joblist=($(jobs -p))
+		done
+		ret&
+	done
+wait
+for ((i=0; i<${#contigs_file[@]}; i++))
+	do 
+		joblist=($(jobs -p))
+		while (( ${#joblist[*]} >= 20 ))
+		do
+			sleep 1
+			joblist=($(jobs -p))
+		done
+		lai&
+	done
+
+exit

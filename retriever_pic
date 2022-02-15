@@ -1,0 +1,38 @@
+pass.list <- read.delim("~/Documents/DSanalysis/ltrretriever_result/genome.fa.mod.pass.list", header=FALSE, comment.char="#")
+View(pass.list)
+names(pass.list) <- c("LTR_loc","category","modif","TSD","5","3","internal","identify","strand","superfamily","TE_type","insertion_time")
+
+list.gff3 <- read.delim("~/Documents/DSanalysis/ltrretriever_result/genome.fa.mod.pass.list.gff3", header=FALSE, comment.char="#")
+View(list.gff3)
+names(list.gff3) <- c("seqid", "source", "sequence_ontology", "start", "end", "score", "strand", "phase", "attributes")
+list.gff3 <- transform(list.gff3, length = end - start)
+
+out.gff3 <- read.delim("~/Documents/DSanalysis/ltrretriever_result/genome.fa.mod.out.gff3", header=FALSE, comment.char="#")
+View(out.gff3)
+names(out.gff3) <- c("seqid", "source", "sequence_ontology", "start", "end", "score", "strand", "phase", "attributes")
+out.gff3 <- transform(out.gff3, length = end - start)
+
+superfam.size <- read.csv("~/Documents/DSanalysis/ltrretriever_result/genome.fa.mod.out.superfam.size.list", sep="")
+View(superfam.size)
+
+fam.size <- read.delim("~/Documents/DSanalysis/ltrretriever_result/genome.fa.mod.out.fam.size.list", header=FALSE, comment.char="#")
+View(fam.size)
+
+pdf("~/Documents/DSanalysis/ltrretriever_result/ltrretriever.pdf")
+ppi <- 300
+png("~/Documents/DSanalysis/ltrretriever_result/ltrretriever-%d.png", width = 4*ppi, height = 4*ppi, res = ppi)
+
+## barplot of copies_num
+library(ggplot2)
+ggplot(pass.list, aes(TE_type, fill = superfamily)) + geom_bar(colour ="black") + scale_fill_manual(values = c("#000000","#ADD8E6","#F0FFFF")) + xlab("TE type") + ggtitle("The copy number of each TE type.")
+
+## insertion time
+ggplot(pass.list, aes(insertion_time, fill = superfamily)) + geom_histogram(position = "dodge",binwidth = 10000) + scale_fill_manual(values = c("#000000","#ADD8E6","#F0FFFF")) + ggtitle("The insertion time of LTR.") + facet_wrap(~ superfamily, ncol = 1)
+
+## length
+ggplot(out.gff3,aes(length, fill = sequence_ontology)) + geom_histogram(position = "dodge", binwidth = 100) + scale_fill_manual(values = c("#000000","#ADD8E6","#F0FFFF")) + ggtitle("The length of LTR.") + facet_wrap(~ sequence_ontology, ncol = 1)
+
+## ontology
+ggplot(list.gff3, aes(sequence_ontology)) +geom_bar(fill = "lightblue") + xlab("ontology") + ggtitle("The copy number of each sequence ontology.")
+
+dev.off()

@@ -5,7 +5,7 @@
 #Date： 2021-10-29
 #FileName： retriever.sh
 #URL： 
-#Description：这是聪明的钮蓓蕊写的第二个shell文件，主要是参照blast.sh做了一些修改，用来批量进行ltr_retriever，预计用时会很长。第一个误删了，不过差不多，反正以后还会写。
+#Description：这是聪明的钮蓓蕊写的第二个shell文件，主要是参照blast.sh做了一些修改，用来批量进行ltr_retriever，预计用时会很长。第一个误删了，不过没关系，反正以后还会写。
 #********************************************************************
 PATH=/data1/home/beirui/anaconda3/bin:/data1/home/beirui/anaconda3/condabin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/data1/home/beirui/.local/bin:/data1/home/beirui/bin
 export PATH

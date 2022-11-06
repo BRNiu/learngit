@@ -1,0 +1,22 @@
+##进化树构建之最大似然法
+
+Maximum likelihood (ML)
+	What is the likelihood? --The likelihood of a hypothesis is the proportion to the probability that it is true, which means the likelihood of the hypothesis is the probability of observing data given hypothesis h.
+	Phylogeny and Likelihood --The likelihood of phylogeny is the probability of a character state distribution(the data) given that phylogeny. The tree hypothesis(topology+ branch lengths) that maximizes the probability of having observed information is the tree of maximum likelihood, and is to be preferred over less "likely" hypotheses.
+	What is the model? --Tree implies nothing regarding the probability of state change. A process model of evolution is required to assess the likelihood of a tree.
+
+Stationary models for ML estimation from DNA data
+1.碱基替换是一个马尔可夫过程（Markov Process）：马克可夫性&随机过程
+2.碱基的替换是时间可逆的
+3.均一过程（Homogeneity）
+
+Q Matrix: General Time Reversible Model(GTR) -->F846/HKY85 -->K2P
+Homogeneous and nested
+
+Estimating likelihood given a model
+Q Matrix --> P Matrix
+
+Rate Heterogeneity
+进化速率的不均一性
+Gamma parameter(Gamma distribution)
+Complexing modeling

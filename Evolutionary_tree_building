@@ -1,25 +1,28 @@
 ##进化树构建之最大似然法
-
 Maximum likelihood (ML)
 	What is the likelihood? --The likelihood of a hypothesis is the proportion to the probability that it is true, which means the likelihood of the hypothesis is the probability of observing data given hypothesis h.
 	Phylogeny and Likelihood --The likelihood of phylogeny is the probability of a character state distribution(the data) given that phylogeny. The tree hypothesis(topology+ branch lengths) that maximizes the probability of having observed information is the tree of maximum likelihood, and is to be preferred over less "likely" hypotheses.
 	What is the model? --Tree implies nothing regarding the probability of state change. A process model of evolution is required to assess the likelihood of a tree.
-
 Stationary models for ML estimation from DNA data
-1.碱基替换是一个马尔可夫过程（Markov Process）：马克可夫性&随机过程
-2.碱基的替换是时间可逆的
-3.均一过程（Homogeneity）
-
+	1.碱基替换是一个马尔可夫过程（Markov Process）：马克可夫性&随机过程
+	2.碱基的替换是时间可逆的
+	3.均一过程（Homogeneity）
 Q Matrix: General Time Reversible Model(GTR) -->F846/HKY85 -->K2P
-Homogeneous and nested
-
+	Homogeneous and nested
 Estimating likelihood given a model
-Q Matrix --> P Matrix
-
+	Q Matrix --> P Matrix
 Rate Heterogeneity
-进化速率的不均一性
-Gamma parameter(Gamma distribution)
-Complexing modeling
-
-
+	进化速率的不均一性
+	Gamma parameter(Gamma distribution)
+	Complexing modeling
 ###Molecular Evolution and Phylogenetics. By M. Nei and S. Kumar. Oxford University Press. 2000.
+
+##进化树构建之近邻结合法
+Neighbor joining(NJ)
+	Neighbor joining is a bottom-up(agglomerative) clustering method, which requires knowledge of the distance between each pair of taxa.
+1.Based on the current distance matrix, calculate a matrix {\displaystyle Q}Q (defined below).
+2.Find the pair of distinct taxa i and j (i.e. with {\displaystyle i\neq j}i\neq j) for which {\displaystyle Q(i,j)}Q(i,j) is smallest. Make a new node that joins the taxa i and j, and connect the new node to the central node. For example, in part (B) of the figure at right, node u is created to join f and g.
+3.Calculate the distance from each of the taxa in the pair to this new node.
+4.Calculate the distance from each of the taxa outside of this pair to the new node.
+5.Start the algorithm again, replacing the pair of joined neighbors with the new node and using the distances calculated in the previous step.
+###https://doi.org/10.1093/oxfordjournals.molbev.a040454
